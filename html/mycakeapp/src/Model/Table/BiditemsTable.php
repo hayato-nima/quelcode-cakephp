@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -47,7 +46,7 @@ class BiditemsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER',
         ]);
-        $this->hasOne('Bidinfo', [
+        $this->hasMany('Bidinfo', [
             'foreignKey' => 'biditem_id',
         ]);
         $this->hasMany('Bidrequests', [
@@ -77,6 +76,17 @@ class BiditemsTable extends Table
             ->boolean('finished')
             ->requirePresence('finished', 'create')
             ->notEmptyString('finished');
+
+        $validator
+            ->scalar('description')
+            ->requirePresence('description', 'create')
+            ->notEmptyString('description');
+
+        $validator
+            ->scalar('image_path')
+            ->maxLength('image_path', 255)
+            ->requirePresence('image_path', 'create')
+            ->notEmptyFile('image_path');
 
         $validator
             ->dateTime('endtime')
