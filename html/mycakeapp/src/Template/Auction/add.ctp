@@ -7,7 +7,9 @@
 		echo '<p><strong>USER: ' . $authuser['username'] . '</strong></p>';
 		echo $this->Form->control('name');
 		echo $this->Form->control('description');
-		echo $this->Form->control('image_path');//ダミーのフォーム
+		echo ('商品画像を選択してください');
+		echo $this->Form->file('image');
+		// echo $this->Form->control('image_path');//ダミーのフォーム
 		echo $this->Form->hidden('finished', ['value' => 0]);
 		echo $this->Form->control('endtime');
 		// var_dump($biditem);
