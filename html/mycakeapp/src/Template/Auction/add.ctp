@@ -6,8 +6,11 @@
 		echo $this->Form->hidden('user_id', ['value' => $authuser['id']]);
 		echo '<p><strong>USER: ' . $authuser['username'] . '</strong></p>';
 		echo $this->Form->control('name');
+		echo $this->Form->control('description');
+		echo $this->Form->control('image_path');//ダミーのフォーム
 		echo $this->Form->hidden('finished', ['value' => 0]);
 		echo $this->Form->control('endtime');
+		// var_dump($biditem);
 	?>
 </fieldset>
 <?= $this->Form->button(__('Submit')) ?>

@@ -80,13 +80,15 @@ class BiditemsTable extends Table
         $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
+            ->maxLength('description', 1000)
             ->notEmptyString('description');
 
         $validator
             ->scalar('image_path')
             ->maxLength('image_path', 255)
             ->requirePresence('image_path', 'create')
-            ->notEmptyFile('image_path');
+            ->notEmptyString('name');//ダミー
+            // ->notEmptyFile('image_path');
 
         $validator
             ->dateTime('endtime')
