@@ -90,6 +90,25 @@ class AuctionController extends AuctionBaseController
 		$biditem = $this->Biditems->newEntity();
 		// POST送信時の処理
 		if ($this->request->is('post')) {
+			
+			$file = $this->request->getData('image_path'); //ファイル名受け取り
+			$filePath = '../webroot/img/auction' . date("YmdHis") . $file['name']; 
+			move_uploaded_file($file['tmp_name'], $filePath); 
+			
+
+			// echo $file['tmp_name'];
+			// echo $file['name'];
+			// $this->log($file);
+			// var_dump($file);
+			// var_dump($_POST);
+			// debug($file);
+			
+			exit;//処理中断
+
+
+
+			
+
 			// $biditemにフォームの送信内容を反映
 			$biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
 			// $biditemを保存する
@@ -99,6 +118,7 @@ class AuctionController extends AuctionBaseController
 				// トップページ（index）に移動
 				return $this->redirect(['action' => 'index']);
 			}
+			// debug($biditem); 
 			// dd($biditem);
 			// 失敗時のメッセージ
 			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
