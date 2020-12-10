@@ -95,22 +95,26 @@ class AuctionController extends AuctionBaseController
 			$filePath = '../webroot/img/auction/' . date("YmdHis") . $file['name']; 
 			move_uploaded_file($file['tmp_name'], $filePath); 
 			
-
-			// echo $file['tmp_name'];
-			// echo $file['name'];
-			// $this->log($file);
-			// var_dump($file);
-			// var_dump($_POST);
+			// $biditem = $this->request->getData();
+			// var_dump($biditem['endtime']);
 			// debug($file);
-
+			
 			// exit;//処理中断
-
+			
+			$data = array(
+				'user_id' => $this->request->getData('user_id'),
+				'name' => $this->request->getData('name'),
+				'finished' => $this->request->getData('finished'),
+				'description' => $this->request->getData('description'),
+				'image_path' => date("YmdHis") . $file['name'] ,
+				'endtime' => $this->request->getData('endtime')
+			); 
 
 
 			
 
 			// $biditemにフォームの送信内容を反映
-			$biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
+			$biditem = $this->Biditems->patchEntity($biditem, $data);
 			// $biditemを保存する
 			if ($this->Biditems->save($biditem)) {
 				// 成功時のメッセージ
@@ -119,7 +123,7 @@ class AuctionController extends AuctionBaseController
 				return $this->redirect(['action' => 'index']);
 			}
 			// debug($biditem); 
-			dd($biditem);
+			// dd($biditem);
 			// 失敗時のメッセージ
 			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 		}
