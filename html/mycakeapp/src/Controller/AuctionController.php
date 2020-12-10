@@ -92,7 +92,7 @@ class AuctionController extends AuctionBaseController
 		if ($this->request->is('post')) {
 			
 			$file = $this->request->getData('image_path'); //ファイル名受け取り
-			$filePath = '../webroot/img/auction' . date("YmdHis") . $file['name']; 
+			$filePath = '../webroot/img/auction/' . date("YmdHis") . $file['name']; 
 			move_uploaded_file($file['tmp_name'], $filePath); 
 			
 
@@ -102,8 +102,8 @@ class AuctionController extends AuctionBaseController
 			// var_dump($file);
 			// var_dump($_POST);
 			// debug($file);
-			
-			exit;//処理中断
+
+			// exit;//処理中断
 
 
 
@@ -119,7 +119,7 @@ class AuctionController extends AuctionBaseController
 				return $this->redirect(['action' => 'index']);
 			}
 			// debug($biditem); 
-			// dd($biditem);
+			dd($biditem);
 			// 失敗時のメッセージ
 			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 		}
