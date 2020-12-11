@@ -87,8 +87,13 @@ class BiditemsTable extends Table
             ->scalar('image_path')
             ->maxLength('image_path', 255)
             ->requirePresence('image_path', 'create')
-            // ->notEmptyString('name');//ダミー
-            ->notEmptyFile('image_path');
+            ->notEmptyFile('image_path')
+            ;
+            // ->add('image_path', ['list' => [
+            //     'rule' => ['inList', ['jpg', 'jpeg', 'gif','png' ,'JPG' , 'JPEG' ,'GIF' , 'PNG']],
+            //     'message' => 'jpg, jpeg, gif, png のみアップロード可能です(大文字可).',
+            // ]]);
+
 
         $validator
             ->dateTime('endtime')

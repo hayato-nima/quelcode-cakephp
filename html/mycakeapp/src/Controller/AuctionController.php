@@ -92,29 +92,37 @@ class AuctionController extends AuctionBaseController
 		if ($this->request->is('post')) {
 			
 			$file = $this->request->getData('image_path'); //ファイル名受け取り
-			$filePath = '../webroot/img/auction/' . date("YmdHis") . $file['name']; 
-			move_uploaded_file($file['tmp_name'], $filePath); 
-			
-			// $biditem = $this->request->getData();
-			// var_dump($biditem['endtime']);
-			// debug($file);
-			
-			// exit;//処理中断
-			
-			$data = array(
-				'user_id' => $this->request->getData('user_id'),
-				'name' => $this->request->getData('name'),
-				'finished' => $this->request->getData('finished'),
-				'description' => $this->request->getData('description'),
-				'image_path' => date("YmdHis") . $file['name'] ,
-				'endtime' => $this->request->getData('endtime')
-			); 
 
-
+			$ext = substr($file['name'] , -4);//ファイル名の拡張子だけ切り取る
+			$ext2 = substr($file['name'] , -5);//JPEG用
+			$str = strtoupper($ext);//大文字に変換
+			$str2 = strtoupper($ext2);//JPEG用
 			
+			if($str == '.JPG'||$str == '.GIF'||$str == '.PNG'||$str2== '.JPEG'){
 
-			// $biditemにフォームの送信内容を反映
-			$biditem = $this->Biditems->patchEntity($biditem, $data);
+				$filePath = '../webroot/img/auction/' . date("YmdHis") . $file['name']; 
+				move_uploaded_file($file['tmp_name'], $filePath); 
+				
+				$data = array(
+					'user_id' => $this->request->getData('user_id'),
+					'name' => $this->request->getData('name'),
+					'finished' => $this->request->getData('finished'),
+					'description' => $this->request->getData('description'),
+					'image_path' => date("YmdHis") . $file['name'],
+					'endtime' => $this->request->getData('endtime')
+				); 
+				//$biditemにフォームの送信内容を反映
+				$biditem = $this->Biditems->patchEntity($biditem, $data);
+				
+			}else{
+				$this->Flash->error(__('※拡張子が.jpg, .gif, .png, .jpegのいずれかのファイルをアップロードしてください。（大文字可）'));
+				// エラーを回避するために記述↓
+				$biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
+				
+			}
+			
+		
+
 			// $biditemを保存する
 			if ($this->Biditems->save($biditem)) {
 				// 成功時のメッセージ
