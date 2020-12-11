@@ -80,7 +80,7 @@ class BiditemsTable extends Table
         $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
-            ->maxLength('description', 1000)
+            ->maxLength('description', 1000 , '※文字数が多すぎます')
             ->notEmptyString('description');
 
         $validator
