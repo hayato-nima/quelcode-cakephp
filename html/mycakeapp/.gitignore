@@ -40,5 +40,5 @@ nbproject/*
 # Sass preprocessor
 .sass-cache/
 # フォルダauction内の.gitkeep以外のファイルは無視する
-auction/
+/webroot/img/auction/*
 !.gitkeep
