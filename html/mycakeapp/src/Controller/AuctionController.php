@@ -100,8 +100,8 @@ class AuctionController extends AuctionBaseController
 			if (in_array($upperExt, ['JPG', 'GIF', 'PNG', 'JPEG'], true)) {
 
 				$user_id = $this->request->getData('user_id');
-				
-				$filePath = '../webroot/img/auction/' . date("YmdHis") . 'user' .$user_id . $upperExt;
+
+				$filePath = '../webroot/img/auction/' . date("YmdHis") . 'user' . $user_id . $upperExt;
 				move_uploaded_file($file['tmp_name'], $filePath);
 
 				$data = array(
@@ -109,7 +109,7 @@ class AuctionController extends AuctionBaseController
 					'name' => $this->request->getData('name'),
 					'finished' => $this->request->getData('finished'),
 					'description' => $this->request->getData('description'),
-					'image_path' => date("YmdHis") . 'user' .$user_id . $upperExt,
+					'image_path' => date("YmdHis") . 'user' . $user_id . $upperExt,
 					'endtime' => $this->request->getData('endtime')
 				);
 				//$biditemにフォームの送信内容を反映
