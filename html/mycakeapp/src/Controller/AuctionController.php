@@ -93,12 +93,10 @@ class AuctionController extends AuctionBaseController
 			
 			$file = $this->request->getData('image_path'); //ファイル名受け取り
 
-			$ext = substr($file['name'] , -4);//ファイル名の拡張子だけ切り取る
-			$ext2 = substr($file['name'] , -5);//JPEG用
-			$str = strtoupper($ext);//大文字に変換
-			$str2 = strtoupper($ext2);//JPEG用
+			$ext = pathinfo($file['name'])['extension'] ?? '';//拡張子の取得
+			$upperExt = strtoupper($ext);//大文字に変換
 			
-			if($str == '.JPG'||$str == '.GIF'||$str == '.PNG'||$str2== '.JPEG'){
+			if(in_array($upperExt, ['JPG', 'GIF', 'PNG', 'JPEG'], true)){
 
 				$filePath = '../webroot/img/auction/' . date("YmdHis") . $file['name']; 
 				move_uploaded_file($file['tmp_name'], $filePath); 
