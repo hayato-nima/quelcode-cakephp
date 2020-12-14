@@ -39,3 +39,6 @@ nbproject/*
 .vscode
 # Sass preprocessor
 .sass-cache/
+# フォルダauction内の.gitkeep以外のファイルは無視する
+/mycakeapp/webroot/img/auction/*
+!/mycakeapp/webroot/img/auction/.gitkeep
