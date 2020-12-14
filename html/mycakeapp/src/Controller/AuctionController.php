@@ -90,17 +90,17 @@ class AuctionController extends AuctionBaseController
 		$biditem = $this->Biditems->newEntity();
 		// POST送信時の処理
 		if ($this->request->is('post')) {
-			
+
 			$file = $this->request->getData('image_path'); //ファイル名受け取り
 
-			$ext = pathinfo($file['name'])['extension'] ?? '';//拡張子の取得
-			$upperExt = strtoupper($ext);//大文字に変換
-			
-			if(in_array($upperExt, ['JPG', 'GIF', 'PNG', 'JPEG'], true)){
+			$ext = pathinfo($file['name'])['extension'] ?? ''; //拡張子の取得
+			$upperExt = strtoupper($ext); //大文字に変換
 
-				$filePath = '../webroot/img/auction/' . date("YmdHis") . $file['name']; 
-				move_uploaded_file($file['tmp_name'], $filePath); 
-				
+			if (in_array($upperExt, ['JPG', 'GIF', 'PNG', 'JPEG'], true)) {
+
+				$filePath = '../webroot/img/auction/' . date("YmdHis") . $file['name'];
+				move_uploaded_file($file['tmp_name'], $filePath);
+
 				$data = array(
 					'user_id' => $this->request->getData('user_id'),
 					'name' => $this->request->getData('name'),
@@ -108,18 +108,16 @@ class AuctionController extends AuctionBaseController
 					'description' => $this->request->getData('description'),
 					'image_path' => date("YmdHis") . $file['name'],
 					'endtime' => $this->request->getData('endtime')
-				); 
+				);
 				//$biditemにフォームの送信内容を反映
 				$biditem = $this->Biditems->patchEntity($biditem, $data);
-				
-			}else{
+			} else {
 				$this->Flash->error(__('※拡張子が.jpg, .gif, .png, .jpegのいずれかのファイルをアップロードしてください。（大文字可）'));
 				// エラーを回避するために記述↓
 				$biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
-				
 			}
-			
-		
+
+
 
 			// $biditemを保存する
 			if ($this->Biditems->save($biditem)) {
@@ -128,8 +126,6 @@ class AuctionController extends AuctionBaseController
 				// トップページ（index）に移動
 				return $this->redirect(['action' => 'index']);
 			}
-			// debug($biditem); 
-			// dd($biditem);
 			// 失敗時のメッセージ
 			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 		}

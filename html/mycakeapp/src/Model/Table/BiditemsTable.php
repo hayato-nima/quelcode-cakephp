@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -80,20 +81,14 @@ class BiditemsTable extends Table
         $validator
             ->scalar('description')
             ->requirePresence('description', 'create')
-            ->maxLength('description', 1000 , '※文字数が多すぎます')
+            ->maxLength('description', 1000, '※文字数が多すぎます')
             ->notEmptyString('description');
 
         $validator
             ->scalar('image_path')
             ->maxLength('image_path', 255)
             ->requirePresence('image_path', 'create')
-            ->notEmptyFile('image_path')
-            ;
-            // ->add('image_path', ['list' => [
-            //     'rule' => ['inList', ['jpg', 'jpeg', 'gif','png' ,'JPG' , 'JPEG' ,'GIF' , 'PNG']],
-            //     'message' => 'jpg, jpeg, gif, png のみアップロード可能です(大文字可).',
-            // ]]);
-
+            ->notEmptyFile('image_path');
 
         $validator
             ->dateTime('endtime')
