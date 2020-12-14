@@ -90,17 +90,12 @@ class AuctionController extends AuctionBaseController
 		$biditem = $this->Biditems->newEntity();
 		// POST送信時の処理
 		if ($this->request->is('post')) {
-
 			$file = $this->request->getData('image_path'); //ファイル名受け取り
 			$ext = pathinfo($file['name'])['extension'] ?? ''; //拡張子の取得
 			$upperExt = strtoupper($ext); //大文字に変換
 
-
-
 			if (in_array($upperExt, ['JPG', 'GIF', 'PNG', 'JPEG'], true)) {
-
 				$user_id = $this->request->getData('user_id');
-
 				$filePath = '../webroot/img/auction/' . date("YmdHis") . 'user' . $user_id . $upperExt;
 				move_uploaded_file($file['tmp_name'], $filePath);
 
@@ -119,8 +114,6 @@ class AuctionController extends AuctionBaseController
 				// エラーを回避するために記述↓
 				$biditem = $this->Biditems->patchEntity($biditem, $this->request->getData());
 			}
-
-
 
 			// $biditemを保存する
 			if ($this->Biditems->save($biditem)) {
