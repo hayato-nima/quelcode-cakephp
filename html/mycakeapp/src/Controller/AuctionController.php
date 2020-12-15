@@ -211,4 +211,10 @@ class AuctionController extends AuctionBaseController
 		])->toArray();
 		$this->set(compact('biditems'));
 	}
+
+	//取引のページ
+	public function deal()
+	{
+		
+	}
 }
