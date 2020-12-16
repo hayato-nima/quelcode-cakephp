@@ -35,11 +35,11 @@ class CreateDealings extends AbstractMigration
             'null' => false,
         ]);
         $table->addColumn('is_sent', 'boolean', [
-            'default' => null,
+            'default' => 0,
             'null' => false,
         ]);
         $table->addColumn('is_received', 'boolean', [
-            'default' => null,
+            'default' => 0,
             'null' => false,
         ]);
         $table->addColumn('created', 'datetime', [
