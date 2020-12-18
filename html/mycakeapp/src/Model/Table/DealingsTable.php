@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Dealings Model
  *
- * @property \App\Model\Table\BidinfosTable&\Cake\ORM\Association\BelongsTo $Bidinfos
+ * @property \App\Model\Table\BidinfoTable&\Cake\ORM\Association\BelongsTo $Bidinfo
  *
  * @method \App\Model\Entity\Dealing get($primaryKey, $options = [])
  * @method \App\Model\Entity\Dealing newEntity($data = null, array $options = [])
@@ -92,7 +92,7 @@ class DealingsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['bidinfo_id'], 'Bidinfos'));
+        $rules->add($rules->existsIn(['bidinfo_id'], 'Bidinfo'));
 
         return $rules;
     }
