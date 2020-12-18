@@ -221,8 +221,8 @@ class AuctionController extends AuctionBaseController
 	{
 		$dealing = $this->dealings->newEntity();
 		// POST送信時の処理
+		$bidinfo = $this->Bidinfo->find()->where(['id' => $id])->first();
 		if ($this->request->is('post')) {
-			$bidinfo = $this->Bidinfo->find()->where(['id' => $id])->first();
 			$data = array(
 				'bidinfo_id' =>  $bidinfo->id,
 				'address' => $this->request->getData('address'),
@@ -243,6 +243,7 @@ class AuctionController extends AuctionBaseController
 			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 		}
 		// 値を保管
-		$this->set(compact('dealing'));
+		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
+		$this->set(compact('dealing','biditems'));
 	}
 }
