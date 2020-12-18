@@ -34,4 +34,9 @@
 <h2>※落札情報はありません。</h2>
 <?php endif; ?>
 
-<?= $this->Html->link(__('取引情報入力に進む'), ['action' => 'deal']) ?>
+<?= $this->Html->link(__('取引情報入力に進む'), [
+	'controller' => 'auction',
+	'action' => 'deal',
+	$bidinfo['id']
+	]
+	) ?>

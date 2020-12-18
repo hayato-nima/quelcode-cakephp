@@ -23,6 +23,7 @@ class AuctionController extends AuctionBaseController
 		$this->loadModel('Bidrequests');
 		$this->loadModel('Bidinfo');
 		$this->loadModel('Bidmessages');
+		$this->loadModel('dealings');
 		// ログインしているユーザー情報をauthuserに設定
 		$this->set('authuser', $this->Auth->user());
 		// レイアウトをauctionに変更
@@ -213,8 +214,32 @@ class AuctionController extends AuctionBaseController
 	}
 
 	//取引のページ
-	public function deal()
+	public function deal($id = null)
 	{
-		
+		$dealing = $this->dealings->newEntity();
+		// POST送信時の処理
+		if ($this->request->is('post')) {
+			$bidinfo = $this->Bidinfo->find()->where(['id' => $id])->first();
+			$data = array(
+				'bidinfo_id' =>  $bidinfo->id,
+				'address' => $this->request->getData('address'),
+				'delivery_name' => $this->request->getData('delivery_name'),
+				'phone_number' => $this->request->getData('phone_number'),
+				'is_sent' => $this->request->getData('is_sent'),
+				'is_received' => $this->request->getData('is_received')
+			);
+			$dealing = $this->dealings->patchEntity($dealing, $data);
+
+			if ($this->dealings->save($dealing, false)) {
+				// 成功時のメッセージ
+				$this->Flash->success(__('発送情報を保存しました。'));
+				return $this->redirect(['action' => 'deal']);
+			}
+
+			// 失敗時のメッセージ
+			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+		}
+		// 値を保管
+		$this->set(compact('dealing'));
 	}
 }
