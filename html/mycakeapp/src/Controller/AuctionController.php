@@ -184,7 +184,10 @@ class AuctionController extends AuctionBaseController
 			'contain' => ['Users'],
 			'order' => ['created' => 'desc']
 		]);
-		$this->set(compact('bidmsgs', 'bidinfo', 'bidmsg'));
+
+		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
+		$this->set(compact('bidmsgs', 'bidinfo', 'bidmsg','biditems'));
+
 	}
 
 	// 落札情報の表示
@@ -230,7 +233,7 @@ class AuctionController extends AuctionBaseController
 			);
 			$dealing = $this->dealings->patchEntity($dealing, $data);
 
-			if ($this->dealings->save($dealing, false)) {
+			if ($this->dealings->save($dealing)) {
 				// 成功時のメッセージ
 				$this->Flash->success(__('発送情報を保存しました。'));
 				return $this->redirect(['action' => 'deal']);

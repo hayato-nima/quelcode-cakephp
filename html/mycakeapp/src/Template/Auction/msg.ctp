@@ -34,9 +34,12 @@
 <h2>※落札情報はありません。</h2>
 <?php endif; ?>
 
+<?php if ($authuser['id'] === $bidinfo['user_id']||$authuser['id'] === $biditems['user_id'] ): ?>
 <?= $this->Html->link(__('取引情報入力に進む'), [
 	'controller' => 'auction',
 	'action' => 'deal',
 	$bidinfo['id']
 	]
 	) ?>
+<?php endif; ?>
+
