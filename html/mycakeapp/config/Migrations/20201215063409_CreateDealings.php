@@ -13,7 +13,7 @@ class CreateDealings extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('dealings');
+        $table = $this->table('dealings', ['primary_key' => ['bidinfo_id']]);
         $table->addColumn('bidinfo_id', 'integer', [
             'default' => null,
             'limit' => 11,
