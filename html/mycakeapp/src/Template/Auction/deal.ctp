@@ -1,5 +1,7 @@
 <h2>発送受取連絡</h2>
-
+<?php //画面１
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address'] === null) && ($dealing['delivery_name'] === null) && ($dealing['phone_number'] === null)):
+?>
   <?= $this->Form->create($dealing) //dealingsのためのフォーム
   ?>
   <fieldset>
@@ -15,10 +17,12 @@
     <?= $this->Form->button(__('確定')) ?>
     <?= $this->Form->end() ?>
   </fieldset>
+<?php
+endif;
+?>
 
 
-
-
+<?php if (($authuser['id'] === $biditems['user_id'])) : ?>
   <fieldset>
     <?= $this->Form->create($dealing) //dealings,is_sentのフォーム
     ?>
@@ -29,9 +33,9 @@
     <?= $this->Form->button(__('発送しました')) ?>
     <?= $this->Form->end() ?>
   </fieldset>
+<?php endif; ?>
 
-
-
+<?php if (($authuser['id'] === $biditems['user_id'])) : ?>
   <fieldset>
     <?= $this->Form->create($dealing) //dealings,is_receivedのフォーム
     ?>
@@ -42,4 +46,4 @@
     <?= $this->Form->button(__('受け取りました')) ?>
     <?= $this->Form->end() ?>
   </fieldset>
-<
+<?php endif; ?>

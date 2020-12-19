@@ -186,8 +186,7 @@ class AuctionController extends AuctionBaseController
 		]);
 
 		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
-		$this->set(compact('bidmsgs', 'bidinfo', 'bidmsg','biditems'));
-
+		$this->set(compact('bidmsgs', 'bidinfo', 'bidmsg', 'biditems'));
 	}
 
 	// 落札情報の表示
@@ -220,8 +219,9 @@ class AuctionController extends AuctionBaseController
 	public function deal($id = null)
 	{
 		$dealing = $this->dealings->newEntity();
-		// POST送信時の処理
 		$bidinfo = $this->Bidinfo->find()->where(['id' => $id])->first();
+		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
+		// POST送信時の処理
 		if ($this->request->is('post')) {
 			$data = array(
 				'bidinfo_id' =>  $bidinfo->id,
@@ -236,14 +236,14 @@ class AuctionController extends AuctionBaseController
 			if ($this->dealings->save($dealing)) {
 				// 成功時のメッセージ
 				$this->Flash->success(__('発送情報を保存しました。'));
-				return $this->redirect(['action' => 'deal']);
+				// $this->set(compact('dealing', 'biditems'));
+				// return $this->redirect(['action' => 'deal']);
+			} else {
+				// 失敗時のメッセージ
+				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 			}
-
-			// 失敗時のメッセージ
-			$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 		}
 		// 値を保管
-		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
-		$this->set(compact('dealing','biditems'));
+		$this->set(compact('dealing', 'biditems' , 'bidinfo'));
 	}
 }
