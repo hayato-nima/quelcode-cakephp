@@ -1,5 +1,5 @@
 <h2>発送受取連絡</h2>
-<?php //画面１
+<?php //画面１落札者
 if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address'] === null) && ($dealing['delivery_name'] === null) && ($dealing['phone_number'] === null)):
 ?>
   <?= $this->Form->create($dealing) //dealingsのためのフォーム
@@ -8,9 +8,9 @@ if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address'] === null) 
     <legend>発送先情報連絡</legend>
     <?php
     echo '<p><strong>ITEM: ' . $biditems['name'] . '</strong></p>';
-    echo $this->Form->control('address');
-    echo $this->Form->control('delivery_name');
-    echo $this->Form->control('phone_number');
+    echo $this->Form->control('address',['label'=>'発送先住所']);
+    echo $this->Form->control('delivery_name',['label'=>'お届け先名称']);
+    echo $this->Form->control('phone_number',['label'=>'電話番号']);
     echo $this->Form->hidden('is_sent', ['value' => 0]);
     echo $this->Form->hidden('is_received', ['value' => 0]);
     ?>
@@ -21,7 +21,7 @@ if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address'] === null) 
 endif;
 ?>
 
-<?php //画面2
+<?php //画面2出品者
 if (($authuser['id'] === $biditems['user_id']) && ($dealing['address'] === null) && ($dealing['delivery_name'] === null) && ($dealing['phone_number'] === null)):
 ?>
   <fieldset>
@@ -34,7 +34,6 @@ if (($authuser['id'] === $biditems['user_id']) && ($dealing['address'] === null)
 <?php
 endif;
 ?>
-
 
 <?php if (($authuser['id'] === $biditems['user_id'])) : ?><!-- 条件未設定です -->
   <!-- <fieldset>
