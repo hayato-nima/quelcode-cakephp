@@ -236,14 +236,13 @@ class AuctionController extends AuctionBaseController
 			if ($this->dealings->save($dealing)) {
 				// 成功時のメッセージ
 				$this->Flash->success(__('発送情報を保存しました。'));
-				// $this->set(compact('dealing', 'biditems'));
-				// return $this->redirect(['action' => 'deal']);
 			} else {
 				// 失敗時のメッセージ
 				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 			}
 		}
 		// 値を保管
+		$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
 		$this->set(compact('dealing', 'biditems' , 'bidinfo'));
 	}
 }

@@ -62,6 +62,37 @@ if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($deal
 <?php endif; ?>
 
 
+<?php //画面４出品者
+if (($authuser['id'] === $biditems['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']))://出品者で$dealingに値がある
+?>
+  <fieldset>
+    <legend>発送先情報（確定済）</legend>
+    <?php
+    echo '<p><strong>ITEM: ' . $biditems['name'] . '</strong></p>';
+    echo "<p>発送先住所: " . $dealing['address'] . '</p>';
+    echo "<p>お届け先名称: " . $dealing['delivery_name'] . '</p>';
+    echo "<p>電話番号: " . $dealing['phone_number'] . '</p>';
+    ?>
+  </fieldset>
+<?php
+endif;
+?>
+<?php //画面４出品者
+if (($authuser['id'] === $biditems['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']))://出品者で$dealingに値がある
+?>
+<fieldset>
+ <?= $this->Form->create($dealing) //dealings,is_sentのフォーム
+    ?>
+    <legend>発送連絡</legend>
+    <?php
+    echo $this->Form->hidden('is_sent', ['value' => 1]);
+    ?>
+    <?= $this->Form->button(__('発送しました')) ?>
+    <?= $this->Form->end() ?>
+  </fieldset>
+<?php endif; ?>
+
+
 
 <?php if (($authuser['id'] === $biditems['user_id'])) : ?><!-- 条件未設定です -->
   <!-- <fieldset>
@@ -75,7 +106,6 @@ if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($deal
     <?= $this->Form->end() ?>
   </fieldset> -->
 <?php endif; ?>
-
 
 <?php if (($authuser['id'] === $biditems['user_id'])) : ?><!-- 条件未設定です -->
   <!-- <fieldset>
