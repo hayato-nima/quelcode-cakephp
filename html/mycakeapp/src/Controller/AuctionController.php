@@ -256,7 +256,7 @@ class AuctionController extends AuctionBaseController
 			$dealing = $this->dealings->patchEntity($dealing, $data);
 			if ($this->dealings->save($dealing)) {
 				// 成功時のメッセージ
-				$this->Flash->success(__('発送情報を保存しました。'));
+				$this->Flash->success(__('発送情報は確定しています。'));
 			} else {
 				// 失敗時のメッセージ
 				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
