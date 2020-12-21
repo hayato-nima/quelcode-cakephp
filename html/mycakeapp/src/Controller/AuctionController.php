@@ -243,26 +243,20 @@ class AuctionController extends AuctionBaseController
 			}
 		}
 		$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
-
-		// if ($_POST['is_sent'] === 1) {
-		// 	$data = array(
-		// 		'bidinfo_id' =>  $bidinfo->id,
-		// 		'address' => $dealing['address'],
-		// 		'delivery_name' => $dealing['delivery_name'],
-		// 		'phone_number' => $dealing['phone_number'],
-		// 		'is_sent' => 1,
-		// 		'is_received' => $dealing['is_received']
-		// 	);
-		// 	$dealing = $this->dealings->patchEntity($dealing, $data);
-		// 	if ($this->dealings->save($dealing)) {
-		// 		// 成功時のメッセージ
-		// 		$this->Flash->success(__('発送情報は確定しています。'));
-		// 	} else {
-		// 		// 失敗時のメッセージ
-		// 		$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
-		// 	}
-		// }
-		// $dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
+		if (($this->request->is('put')) && ($dealing['is_sent'] === false) && (isset($dealing['address']))) {
+			$data = array(
+				'is_sent' => 1,
+			);
+			$dealing = $this->dealings->patchEntity($dealing, $data);
+			if ($this->dealings->save($dealing)) {
+				// 成功時のメッセージ
+				$this->Flash->success(__('落札者に発送を通知しました。'));
+			} else {
+				// 失敗時のメッセージ
+				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+			}
+		}
+		$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
 		// 値を保管
 		$this->set(compact('dealing', 'biditems', 'bidinfo'));
 	}

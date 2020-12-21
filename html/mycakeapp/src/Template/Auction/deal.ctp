@@ -11,8 +11,6 @@ if (($authuser['id'] === $bidinfo['user_id']) && (is_null($dealing['address'])) 
     echo $this->Form->control('address', ['label' => '発送先住所']);
     echo $this->Form->control('delivery_name', ['label' => 'お届け先名称']);
     echo $this->Form->control('phone_number', ['label' => '電話番号']);
-    echo $this->Form->hidden('is_sent', ['value' => 0]);
-    echo $this->Form->hidden('is_received', ['value' => 0]);
     ?>
     <?= $this->Form->button(__('確定')) ?>
     <?= $this->Form->end() ?>
@@ -85,9 +83,6 @@ if (($authuser['id'] === $biditems['user_id']) && ($dealing['address']) && ($dea
     <?= $this->Form->create($dealing) //dealings,is_sentのフォーム
     ?>
     <legend>発送連絡</legend>
-    <?php
-    echo $this->Form->hidden('is_sent', ['value' => 1]);
-    ?>
     <?= $this->Form->button(__('発送しました')) ?>
     <?= $this->Form->end() ?>
   </fieldset>
@@ -166,9 +161,6 @@ if (($authuser['id'] === $biditems['user_id']) && ($dealing['address']) && ($dea
 <?php
 endif;//画面６ココマデ
 ?>
-
-
-
 
 <?php if (($authuser['id'] === $biditems['user_id'])) : ?>
   <!-- 条件未設定です -->
