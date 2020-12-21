@@ -245,7 +245,7 @@ class AuctionController extends AuctionBaseController
 		$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
 
 		//is_sentのフラグ切り替え
-		if (($this->request->is('put')) && ($dealing['is_sent'] === false) && (isset($dealing['address']))) {
+		if (($this->request->is('put')) && ($dealing['is_sent'] === false) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
 			$data = array(
 				'is_sent' => 1,
 			);
@@ -257,10 +257,7 @@ class AuctionController extends AuctionBaseController
 				// 失敗時のメッセージ
 				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 			}
-		}
-
-		//is_receivedのフラグ切り替え
-		if (($this->request->is('put')) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
+		} elseif (($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) { //is_receivedのフラグ切り替え
 			$data = array(
 				'is_received' => 1,
 			);
