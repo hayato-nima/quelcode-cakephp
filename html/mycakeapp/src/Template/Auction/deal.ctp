@@ -16,7 +16,7 @@ if (($authuser['id'] === $bidinfo['user_id']) && (is_null($dealing['address'])) 
     <?= $this->Form->end() ?>
   </fieldset>
 <?php
-endif;//画面１ココマデ
+endif; //画面１ココマデ
 ?>
 
 <?php //画面2出品者
@@ -30,7 +30,7 @@ if (($authuser['id'] === $biditems['user_id']) && (is_null($dealing['address']))
     ?>
   </fieldset>
 <?php
-endif;//画面２ココマデ
+endif; //画面２ココマデ
 ?>
 
 <?php //画面３落札者
@@ -49,7 +49,7 @@ if (($authuser['id'] === $bidinfo['user_id']) && (isset($dealing['address'])) &&
 endif;
 ?>
 <?php
-if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === false)):
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === false)) :
 ?>
   <fieldset>
     <legend>発送連絡</legend>
@@ -58,7 +58,7 @@ if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($deal
     ?>
   </fieldset>
 <?php
-endif;//画面３ココマデ
+endif; //画面３ココマデ
 ?>
 
 <?php //画面４出品者
@@ -87,11 +87,11 @@ if (($authuser['id'] === $biditems['user_id']) && ($dealing['address']) && ($dea
     <?= $this->Form->end() ?>
   </fieldset>
 <?php
-endif;//画面４ココマデ
+endif; //画面４ココマデ
 ?>
 
 <?php //画面５落札者
-if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === true)) :
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false)) :
 ?>
   <fieldset>
     <legend>発送先情報（確定済）</legend>
@@ -106,7 +106,7 @@ if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($deal
 endif;
 ?>
 <?php
-if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === true)) :
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false)) :
 ?>
   <fieldset>
     <legend>発送連絡</legend>
@@ -116,20 +116,17 @@ if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($deal
   </fieldset>
 <?php endif; ?>
 <?php
-if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === true)) :
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false)) :
 ?>
   <fieldset>
     <?= $this->Form->create($dealing) //dealings,is_receivedのフォーム
     ?>
     <legend>受取連絡</legend>
-    <?php
-    echo $this->Form->hidden('is_received', ['value' => 1]);
-    ?>
     <?= $this->Form->button(__('受け取りました')) ?>
     <?= $this->Form->end() ?>
   </fieldset>
 <?php
-endif;//画面５ココマデ
+endif; //画面５ココマデ
 ?>
 
 <?php //画面６出品者
@@ -159,19 +156,56 @@ if (($authuser['id'] === $biditems['user_id']) && ($dealing['address']) && ($dea
     ?>
   </fieldset>
 <?php
-endif;//画面６ココマデ
+endif; //画面６ココマデ
 ?>
 
-<?php if (($authuser['id'] === $biditems['user_id'])) : ?>
-  <!-- 条件未設定です -->
-  <!-- <fieldset>
-    <?= $this->Form->create($dealing) //dealings,is_sentのフォーム
+<?php //画面７落札者
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_received'] === true)) :
+?>
+  <fieldset>
+    <legend>発送先情報（確定済）</legend>
+    <?php
+    echo '<p><strong>ITEM: ' . $biditems['name'] . '</strong></p>';
+    echo "<p>発送先住所: " . $dealing['address'] . '</p>';
+    echo "<p>お届け先名称: " . $dealing['delivery_name'] . '</p>';
+    echo "<p>電話番号: " . $dealing['phone_number'] . '</p>';
     ?>
+  </fieldset>
+<?php
+endif;
+?>
+<?php
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_received'] === true)) :
+?>
+  <fieldset>
     <legend>発送連絡</legend>
     <?php
-    echo $this->Form->hidden('is_sent', ['value' => 1]);
+    echo '<p><strong>' . '発送されました。' . '</strong></p>';
     ?>
-    <?= $this->Form->button(__('発送しました')) ?>
-    <?= $this->Form->end() ?>
-  </fieldset> -->
+  </fieldset>
 <?php endif; ?>
+<?php
+if (($authuser['id'] === $bidinfo['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_received'] === true)) :
+?>
+  <fieldset>
+    <legend>受取連絡</legend>
+    <?php
+    echo '<p><strong>' . '受け取りました。' . '</strong></p>';
+    ?>
+  </fieldset>
+<?php
+endif; //画面７ココマデ
+?>
+
+<?php //画面８ 出品者
+if (($authuser['id'] === $biditems['user_id']) && ($dealing['address']) && ($dealing['delivery_name']) && ($dealing['phone_number']) && ($dealing['is_received'] === true)) :
+?>
+  <fieldset>
+    <legend>受取連絡</legend>
+    <?php
+    echo '<p><strong>' . '落札者が商品を受け取りました。' . '</strong></p>';
+    ?>
+  </fieldset>
+<?php
+endif; //画面８ココマデ
+?>
