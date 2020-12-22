@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -66,6 +67,7 @@ class DealingsTable extends Table
 
         $validator
             ->scalar('phone_number')
+            ->integer('phone_number', '数字で入力してください')
             ->maxLength('phone_number', 11)
             ->requirePresence('phone_number', 'create')
             ->notEmptyString('phone_number');
