@@ -1,4 +1,5 @@
 <h2>発送受取連絡</h2>
+
 <?php //落札者
 if (($authuser['id'] === $bidinfo['user_id'])) :
 ?>
@@ -9,8 +10,8 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
       <legend>発送先情報（確定済）</legend>
       <?php
       echo '<p><strong>ITEM: ' . $biditems['name'] . '</strong></p>';
-      echo "<p>発送先住所: " . $dealing['address'] . '</p>';
-      echo "<p>お届け先名称: " . $dealing['delivery_name'] . '</p>';
+      echo "<p>発送先住所: " . h($dealing['address']) . '</p>';
+      echo "<p>お届け先名称: " . h($dealing['delivery_name']) . '</p>';
       echo "<p>電話番号: " . $dealing['phone_number'] . '</p>';
       ?>
     </fieldset>
@@ -21,8 +22,8 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
       <legend>発送先情報（確定済）</legend>
       <?php
       echo '<p><strong>ITEM: ' . $biditems['name'] . '</strong></p>';
-      echo "<p>発送先住所: " . $dealing['address'] . '</p>';
-      echo "<p>お届け先名称: " . $dealing['delivery_name'] . '</p>';
+      echo "<p>発送先住所: " . h($dealing['address']) . '</p>';
+      echo "<p>お届け先名称: " . h($dealing['delivery_name']) . '</p>';
       echo "<p>電話番号: " . $dealing['phone_number'] . '</p>';
       ?>
     </fieldset>
@@ -134,8 +135,8 @@ if (($authuser['id'] === $biditems['user_id'])) :
       <legend>発送先情報（確定済）</legend>
       <?php
       echo '<p><strong>ITEM: ' . $biditems['name'] . '</strong></p>';
-      echo "<p>発送先住所: " . $dealing['address'] . '</p>';
-      echo "<p>お届け先名称: " . $dealing['delivery_name'] . '</p>';
+      echo "<p>発送先住所: " . h($dealing['address']) . '</p>';
+      echo "<p>お届け先名称: " . h($dealing['delivery_name']) . '</p>';
       echo "<p>電話番号: " . $dealing['phone_number'] . '</p>';
       ?>
     </fieldset>
