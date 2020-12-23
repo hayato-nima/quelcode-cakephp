@@ -235,9 +235,7 @@ class AuctionController extends AuctionBaseController
 					'is_sent' => 0,
 					'is_received' => 0
 				);
-
 				$dealing = $this->dealings->patchEntity($dealing, $data);
-
 				if ($this->dealings->save($dealing)) {
 					// 成功時のメッセージ
 					$this->Flash->success(__('発送情報を保存しました。'));
@@ -246,13 +244,11 @@ class AuctionController extends AuctionBaseController
 					$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 				}
 				$this->set(compact('dealing'));
-			}else{
-
+			} else {
 				$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
 				$this->set(compact('dealing'));
 			}
 		}
-
 
 		//出品者の処理
 		if ($authuser === $biditems['user_id']) {
@@ -271,7 +267,7 @@ class AuctionController extends AuctionBaseController
 				$this->Flash->success(__('落札者に発送を通知しました。'));
 			} else {
 				// 失敗時のメッセージ
-				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+				$this->Flash->error(__('発送通知にしました。もう一度入力下さい。'));
 			}
 			$this->set(compact('dealing'));
 		} elseif (($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) { //is_receivedのフラグ切り替え
@@ -284,7 +280,7 @@ class AuctionController extends AuctionBaseController
 				$this->Flash->success(__('出品者に受取を通知しました。'));
 			} else {
 				// 失敗時のメッセージ
-				$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+				$this->Flash->error(__('受け取り通知に失敗しました。もう一度入力下さい。'));
 			}
 			$this->set(compact('dealing'));
 		}
