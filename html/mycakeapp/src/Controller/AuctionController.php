@@ -227,7 +227,7 @@ class AuctionController extends AuctionBaseController
 			$dealingById = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first(); //$dealingを取得
 			// POST送信時の処理
 			$isRequestValid = ($this->request->is('post')) && (isset($_POST['address'])); //フォームからの送信があり尚且つ'address'が存在している
-			$isDealExists = !is_null($dealingById);//$dealingが存在している
+			$isDealExists = !is_null($dealingById); //$dealingが存在している
 			if ($isRequestValid && !$isDealExists) { //フォーム送信時にデータベースに値がなかったら通す
 				$data = array(
 					'bidinfo_id' =>  $bidinfo->id,

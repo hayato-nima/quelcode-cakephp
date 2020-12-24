@@ -1,6 +1,5 @@
 <h2>発送受取連絡</h2>
 
-
 <?php //落札者
 if (($authuser['id'] === $bidinfo['user_id'])) :
 ?>
