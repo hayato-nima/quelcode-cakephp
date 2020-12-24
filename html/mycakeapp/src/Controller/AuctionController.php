@@ -218,15 +218,17 @@ class AuctionController extends AuctionBaseController
 	//取引のページ
 	public function deal($id = null)
 	{
-		$authuser =  $this->Auth->user('id');
-		$dealing = $this->dealings->newEntity();
+		$authuser = $this->Auth->user('id');
 		$bidinfo = $this->Bidinfo->find()->where(['id' => $id])->first();
 		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
 
 		// 落札者の処理
 		if ($authuser === $bidinfo['user_id']) {
+			$dealingById = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first(); //$dealingを取得
 			// POST送信時の処理
-			if (($this->request->is('post')) && (isset($_POST['address']))) {
+			$isRequestValid = ($this->request->is('post')) && (isset($_POST['address'])); //フォームからの送信があり尚且つ'address'が存在している
+			$isDealExists = !is_null($dealingById);//$dealingが存在している
+			if ($isRequestValid && !$isDealExists) { //フォーム送信時にデータベースに値がなかったら通す
 				$data = array(
 					'bidinfo_id' =>  $bidinfo->id,
 					'address' => $this->request->getData('address'),
@@ -235,7 +237,9 @@ class AuctionController extends AuctionBaseController
 					'is_sent' => 0,
 					'is_received' => 0
 				);
-				$dealing = $this->dealings->patchEntity($dealing, $data);
+
+				$dealing = $this->dealings->newEntity();
+				$dealing = $this->dealings->patchEntity($dealing, $data); //エンティティの更新
 				if ($this->dealings->save($dealing)) {
 					// 成功時のメッセージ
 					$this->Flash->success(__('発送情報を保存しました。'));
@@ -244,7 +248,7 @@ class AuctionController extends AuctionBaseController
 					$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 				}
 				$this->set(compact('dealing'));
-			} else {
+			} else { //フォームを表示しない場合は$dealingの値を取得しviewにsetする
 				$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
 				$this->set(compact('dealing'));
 			}
