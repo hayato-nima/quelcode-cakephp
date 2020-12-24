@@ -1,15 +1,15 @@
 <h2>発送受取連絡</h2>
 
-<?php
-$isSentOff = ($dealing['is_sent'] === false); //発送フラグ OFF
-$isSentOn = ($dealing['is_sent'] === true); //発送フラグ ON
-$isReceivedOff = ($dealing['is_received'] === false); //受取フラグ OFF
-$isReceivedOn = ($dealing['is_received'] === true); //受取フラグ ON
-?>
 
 <?php //落札者
 if (($authuser['id'] === $bidinfo['user_id'])) :
 ?>
+  <?php
+  $isSentOff = ($dealing['is_sent'] === false); //発送フラグ OFF
+  $isSentOn = ($dealing['is_sent'] === true); //発送フラグ ON
+  $isReceivedOff = ($dealing['is_received'] === false); //受取フラグ OFF
+  $isReceivedOn = ($dealing['is_received'] === true); //受取フラグ ON
+  ?>
 
   <?php //画面３ 入力後フォーム
   $isDealSettled = ((isset($dealing['address'])) && (isset($dealing['delivery_name'])) && (isset($dealing['phone_number']))); //発送先情報の確認
@@ -125,6 +125,13 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
 <?php //出品者
 if (($authuser['id'] === $biditems['user_id'])) :
 ?>
+
+  <?php
+  $isSentOff = ($dealing['is_sent'] === false); //発送フラグ OFF
+  $isSentOn = ($dealing['is_sent'] === true); //発送フラグ ON
+  $isReceivedOff = ($dealing['is_received'] === false); //受取フラグ OFF
+  $isReceivedOn = ($dealing['is_received'] === true); //受取フラグ ON
+  ?>
 
   <?php //画面2
   if ((is_null($dealing['address']))) : //発送先情報未確定
