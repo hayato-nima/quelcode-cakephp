@@ -257,7 +257,7 @@ class AuctionController extends AuctionBaseController
 		}
 
 		//is_sentのフラグ切り替え
-		if (($this->request->is('put')) && ($dealing['is_sent'] === false) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
+		if (($authuser === $biditems['user_id']) && ($this->request->is('put')) && ($dealing['is_sent'] === false) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
 			$data = array(
 				'is_sent' => 1,
 			);
@@ -269,7 +269,7 @@ class AuctionController extends AuctionBaseController
 				// 失敗時のメッセージ
 				$this->Flash->error(__('発送通知にしました。もう一度入力下さい。'));
 			}
-		} elseif (($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) { //is_receivedのフラグ切り替え
+		} elseif (($authuser === $bidinfo['user_id']) && ($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) { //is_receivedのフラグ切り替え
 			$data = array(
 				'is_received' => 1,
 			);
@@ -279,7 +279,7 @@ class AuctionController extends AuctionBaseController
 				$this->Flash->success(__('出品者に受取を通知しました。'));
 			} else {
 				// 失敗時のメッセージ
-				$this->Flash->error(__('受け取り通知に失敗しました。もう一度入力下さい。'));
+				$this->Flash->error(__('受取通知に失敗しました。もう一度入力下さい。'));
 			}
 		}
 
