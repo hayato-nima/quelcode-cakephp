@@ -221,6 +221,7 @@ class AuctionController extends AuctionBaseController
 		$authuser = $this->Auth->user('id');
 		$bidinfo = $this->Bidinfo->find()->where(['id' => $id])->first();
 		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
+		$dealing = $this->dealings->newEntity();
 
 		// 落札者の処理
 		if ($authuser === $bidinfo['user_id']) {
@@ -237,8 +238,6 @@ class AuctionController extends AuctionBaseController
 					'is_sent' => 0,
 					'is_received' => 0
 				);
-
-				$dealing = $this->dealings->newEntity();
 				$dealing = $this->dealings->patchEntity($dealing, $data); //エンティティの更新
 				if ($this->dealings->save($dealing)) {
 					// 成功時のメッセージ
@@ -247,17 +246,14 @@ class AuctionController extends AuctionBaseController
 					// 失敗時のメッセージ
 					$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
 				}
-				$this->set(compact('dealing'));
-			} else { //フォームを表示しない場合は$dealingの値を取得しviewにsetする
+			} else { //フォームを表示しない場合は$dealingの値を取得する
 				$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
-				$this->set(compact('dealing'));
 			}
 		}
 
 		//出品者の処理
 		if ($authuser === $biditems['user_id']) {
 			$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
-			$this->set(compact('dealing'));
 		}
 
 		//is_sentのフラグ切り替え
@@ -273,7 +269,6 @@ class AuctionController extends AuctionBaseController
 				// 失敗時のメッセージ
 				$this->Flash->error(__('発送通知にしました。もう一度入力下さい。'));
 			}
-			$this->set(compact('dealing'));
 		} elseif (($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) { //is_receivedのフラグ切り替え
 			$data = array(
 				'is_received' => 1,
@@ -286,10 +281,9 @@ class AuctionController extends AuctionBaseController
 				// 失敗時のメッセージ
 				$this->Flash->error(__('受け取り通知に失敗しました。もう一度入力下さい。'));
 			}
-			$this->set(compact('dealing'));
 		}
 
 		// 値を保管
-		$this->set(compact('biditems', 'bidinfo'));
+		$this->set(compact('biditems', 'bidinfo', 'dealing'));
 	}
 }
