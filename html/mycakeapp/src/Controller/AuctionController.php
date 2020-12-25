@@ -254,22 +254,24 @@ class AuctionController extends AuctionBaseController
 		//出品者の処理
 		if ($authuser === $biditems['user_id']) {
 			$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
+			//is_sentのフラグ切り替え
+			if (($this->request->is('put')) && ($dealing['is_sent'] === false) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
+				$data = array(
+					'is_sent' => 1,
+				);
+				$dealing = $this->dealings->patchEntity($dealing, $data);
+				if ($this->dealings->save($dealing)) {
+					// 成功時のメッセージ
+					$this->Flash->success(__('落札者に発送を通知しました。'));
+				} else {
+					// 失敗時のメッセージ
+					$this->Flash->error(__('発送通知にしました。もう一度入力下さい。'));
+				}
+			}
 		}
 
-		//is_sentのフラグ切り替え
-		if (($authuser === $biditems['user_id']) && ($this->request->is('put')) && ($dealing['is_sent'] === false) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
-			$data = array(
-				'is_sent' => 1,
-			);
-			$dealing = $this->dealings->patchEntity($dealing, $data);
-			if ($this->dealings->save($dealing)) {
-				// 成功時のメッセージ
-				$this->Flash->success(__('落札者に発送を通知しました。'));
-			} else {
-				// 失敗時のメッセージ
-				$this->Flash->error(__('発送通知にしました。もう一度入力下さい。'));
-			}
-		} elseif (($authuser === $bidinfo['user_id']) && ($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) { //is_receivedのフラグ切り替え
+		//is_receivedのフラグ切り替え
+		if (($authuser === $bidinfo['user_id']) && ($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
 			$data = array(
 				'is_received' => 1,
 			);
