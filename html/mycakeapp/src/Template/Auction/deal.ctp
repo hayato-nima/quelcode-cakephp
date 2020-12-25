@@ -3,16 +3,10 @@
 <?php //落札者
 if (($authuser['id'] === $bidinfo['user_id'])) :
 ?>
-  <?php
-  $isSentOff = ($dealing['is_sent'] === false); //発送フラグ OFF
-  $isSentOn = ($dealing['is_sent'] === true); //発送フラグ ON
-  $isReceivedOff = ($dealing['is_received'] === false); //受取フラグ OFF
-  $isReceivedOn = ($dealing['is_received'] === true); //受取フラグ ON
-  ?>
 
   <?php //画面３ 入力後フォーム
   $isDealSettled = ((isset($dealing['address'])) && (isset($dealing['delivery_name'])) && (isset($dealing['phone_number']))); //発送先情報の確認
-  if ($isDealSettled && $isSentOff) : //発送先情報 確定｜発送フラグ OFF
+  if ($isDealSettled && ($dealing['is_sent'] === false)) : //発送先情報 確定｜発送フラグ OFF
   ?>
     <fieldset>
       <legend>出品者に送った情報</legend>
@@ -24,7 +18,7 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
       ?>
     </fieldset>
   <?php //画面５
-  elseif ($isDealSettled && $isSentOn) : //発送先情報 確定｜発送フラグ ON
+  elseif ($isDealSettled && ($dealing['is_sent'] === true)) : //発送先情報 確定｜発送フラグ ON
   ?>
     <fieldset>
       <legend>出品者に送った情報</legend>
@@ -59,7 +53,7 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
   ?>
 
   <?php //画面３ 商品発送ボタン
-  if ($isDealSettled && $isSentOff) : //発送先情報 確定｜発送フラグ OFF
+  if ($isDealSettled && ($dealing['is_sent'] === false)) : //発送先情報 確定｜発送フラグ OFF
   ?>
     <fieldset>
       <legend>発送状況</legend>
@@ -71,17 +65,17 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
   endif; //画面３ 商品発送ボタン〆
   ?>
   <?php //画面５ 商品発送ボタン
-  if ($isDealSettled && $isSentOn && $isReceivedOff) : //発送先情報 確定｜発送フラグ ON｜受取フラグ OFF
+  if ($isDealSettled && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false)) : //発送先情報 確定｜発送フラグ ON｜受取フラグ OFF
   ?>
     <fieldset>
       <legend>発送状況</legend>
       <?php
-      echo '<p><strong>' . '出品者が商品を発送しました。到着までお待ちください。' . '</strong></p>';
+      echo '<p><strong>' . '出品者が商品を発送しました。到着したら受取通知をしてください。' . '</strong></p>';
       ?>
     </fieldset>
   <?php endif; ?>
   <?php
-  if ($isDealSettled && $isSentOn && $isReceivedOff) : //発送先情報 確定｜発送フラグ ON｜受取フラグ OFF
+  if ($isDealSettled && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false)) : //発送先情報 確定｜発送フラグ ON｜受取フラグ OFF
   ?>
     <fieldset>
       <legend>受取状況</legend>
@@ -101,7 +95,7 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
     <fieldset>
       <legend>発送状況</legend>
       <?php
-      echo '<p><strong>' . '出品者が商品を発送しました。到着までお待ちください。' . '</strong></p>';
+      echo '<p><strong>' . '出品者が商品を発送しました。到着したら受取通知をしてください。' . '</strong></p>';
       ?>
     </fieldset>
   <?php endif; ?>
@@ -111,7 +105,7 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
     <fieldset>
       <legend>受取状況</legend>
       <?php
-      echo '<p><strong>' . '商品の受取を出品者に通知しました' . '</strong></p>';
+      echo '<p><strong>' . '商品の受取を出品者に通知しました。' . '</strong></p>';
       ?>
     </fieldset>
   <?php
@@ -124,13 +118,6 @@ if (($authuser['id'] === $bidinfo['user_id'])) :
 <?php //出品者
 if (($authuser['id'] === $biditems['user_id'])) :
 ?>
-
-  <?php
-  $isSentOff = ($dealing['is_sent'] === false); //発送フラグ OFF
-  $isSentOn = ($dealing['is_sent'] === true); //発送フラグ ON
-  $isReceivedOff = ($dealing['is_received'] === false); //受取フラグ OFF
-  $isReceivedOn = ($dealing['is_received'] === true); //受取フラグ ON
-  ?>
 
   <?php //画面2
   if ((is_null($dealing['address']))) : //発送先情報未確定
@@ -163,7 +150,7 @@ if (($authuser['id'] === $biditems['user_id'])) :
   endif;
   ?>
   <?php
-  if ($isDealSettledBylisting && $isSentOff) : //発送先情報確定済 未発送
+  if ($isDealSettledBylisting && ($dealing['is_sent'] === false)) : //発送先情報確定済 未発送
   ?>
     <fieldset>
       <legend>発送状況</legend>
@@ -178,7 +165,7 @@ if (($authuser['id'] === $biditems['user_id'])) :
   ?>
 
   <?php //画面６
-  if ($isDealSettledBylisting && $isSentOn) : //発送先情報 確定｜発送フラグ ON
+  if ($isDealSettledBylisting && ($dealing['is_sent'] === true)) : //発送先情報 確定｜発送フラグ ON
   ?>
     <fieldset>
       <legend>発送状況</legend>
@@ -192,7 +179,7 @@ if (($authuser['id'] === $biditems['user_id'])) :
   endif; //画面６ココマデ
   ?>
   <?php //画面８ 出品者
-  if ($isDealSettledBylisting && $isSentOn && $isReceivedOn) : //発送フラグ、受け取りフラグが両方ONのとき、表示する
+  if ($isDealSettledBylisting && ($dealing['is_sent'] === true) && ($dealing['is_received'] === true)) : //発送フラグ、受け取りフラグが両方ONのとき、表示する
   ?>
     <fieldset>
       <legend>受取連絡</legend>
