@@ -23,6 +23,7 @@ class AuctionController extends AuctionBaseController
 		$this->loadModel('Bidrequests');
 		$this->loadModel('Bidinfo');
 		$this->loadModel('Bidmessages');
+		$this->loadModel('dealings');
 		// ログインしているユーザー情報をauthuserに設定
 		$this->set('authuser', $this->Auth->user());
 		// レイアウトをauctionに変更
@@ -183,7 +184,9 @@ class AuctionController extends AuctionBaseController
 			'contain' => ['Users'],
 			'order' => ['created' => 'desc']
 		]);
-		$this->set(compact('bidmsgs', 'bidinfo', 'bidmsg'));
+
+		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
+		$this->set(compact('bidmsgs', 'bidinfo', 'bidmsg', 'biditems'));
 	}
 
 	// 落札情報の表示
@@ -210,5 +213,79 @@ class AuctionController extends AuctionBaseController
 			'limit' => 10
 		])->toArray();
 		$this->set(compact('biditems'));
+	}
+
+	//取引のページ
+	public function deal($id = null)
+	{
+		$authuser = $this->Auth->user('id');
+		$bidinfo = $this->Bidinfo->find()->where(['id' => $id])->first();
+		$biditems = $this->Biditems->find()->where(['id' => $bidinfo['biditem_id']])->first();
+		$dealing = $this->dealings->newEntity();
+
+		// 落札者の処理
+		if ($authuser === $bidinfo['user_id']) {
+			$dealingById = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first(); //$dealingを取得
+			// POST送信時の処理
+			$isRequestValid = ($this->request->is('post')) && (isset($_POST['address'])); //フォームからの送信があり尚且つ'address'が存在している
+			$isDealExists = !is_null($dealingById); //$dealingが存在している
+			if ($isRequestValid && !$isDealExists) { //フォーム送信時にデータベースに値がなかったら通す
+				$data = array(
+					'bidinfo_id' =>  $bidinfo->id,
+					'address' => $this->request->getData('address'),
+					'delivery_name' => $this->request->getData('delivery_name'),
+					'phone_number' => $this->request->getData('phone_number'),
+					'is_sent' => 0,
+					'is_received' => 0
+				);
+				$dealing = $this->dealings->patchEntity($dealing, $data); //エンティティの更新
+				if ($this->dealings->save($dealing)) {
+					// 成功時のメッセージ
+					$this->Flash->success(__('発送情報を保存しました。'));
+				} else {
+					// 失敗時のメッセージ
+					$this->Flash->error(__('保存に失敗しました。もう一度入力下さい。'));
+				}
+			} else { //フォームを表示しない場合は$dealingの値を取得する
+				$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
+			}
+		}
+
+		//出品者の処理
+		if ($authuser === $biditems['user_id']) {
+			$dealing = $this->dealings->find()->where(['bidinfo_id' => $bidinfo['id']])->first();
+			//is_sentのフラグ切り替え
+			if (($this->request->is('put')) && ($dealing['is_sent'] === false) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
+				$data = array(
+					'is_sent' => 1,
+				);
+				$dealing = $this->dealings->patchEntity($dealing, $data);
+				if ($this->dealings->save($dealing)) {
+					// 成功時のメッセージ
+					$this->Flash->success(__('落札者に発送を通知しました。'));
+				} else {
+					// 失敗時のメッセージ
+					$this->Flash->error(__('発送通知にしました。もう一度入力下さい。'));
+				}
+			}
+		}
+
+		//is_receivedのフラグ切り替え
+		if (($authuser === $bidinfo['user_id']) && ($this->request->is('put')) && ($dealing['is_sent'] === true) && ($dealing['is_received'] === false) && (isset($dealing['address']))) {
+			$data = array(
+				'is_received' => 1,
+			);
+			$dealing = $this->dealings->patchEntity($dealing, $data);
+			if ($this->dealings->save($dealing)) {
+				// 成功時のメッセージ
+				$this->Flash->success(__('出品者に受取を通知しました。'));
+			} else {
+				// 失敗時のメッセージ
+				$this->Flash->error(__('受取通知に失敗しました。もう一度入力下さい。'));
+			}
+		}
+
+		// 値を保管
+		$this->set(compact('biditems', 'bidinfo', 'dealing'));
 	}
 }
