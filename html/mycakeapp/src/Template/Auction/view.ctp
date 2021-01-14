@@ -22,7 +22,8 @@
 	</tr>
 	<tr>
 		<th scope="row">終了時間</th>
-		<td><?= h($biditem->endtime) ?></td>
+		<td id="finished">
+			終了まで<span id="day"></span>日と<span id="hour"></span>時間<span id="min"></span>分<span id="sec"></span>秒</td>
 	</tr>
 	<tr>
 		<th scope="row">投稿時間</th>
@@ -82,3 +83,13 @@
 		<p><?= '※入札は、終了しました。' ?></p>
 	<?php endif; ?>
 </div>
+
+<?php
+echo <<<EOM
+<script type="text/javascript">
+//データベースの終了時間をJavaScriptde扱う
+const obj = {$biditem};
+</script>
+EOM;
+echo $this->Html->script('script', array('inline' => true));
+?>
