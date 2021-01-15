@@ -32,9 +32,9 @@ if (biditem["finished"] === true) {
     const min = Math.floor(rest / 1000 / 60) % 60;
     const hours = Math.floor(rest / 1000 / 60 / 60) % 24;
     const days = Math.floor(rest / 1000 / 60 / 60 / 24);
-    const count = { days: days, hours: hours, min: min, sec: sec, rest: rest };
+    const count = { days, hours, min, sec, rest };
     //1回のループごとに１を足す
-    serverCurrentTimestamp = serverCurrentTimestamp + 1;
+    serverCurrentTimestamp++;
     return count;
   };
 
