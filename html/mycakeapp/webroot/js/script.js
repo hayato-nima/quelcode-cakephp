@@ -47,11 +47,10 @@ if (biditem["finished"] === true) {
       document.getElementById('hour').textContent = counter.hours;
       document.getElementById('min').textContent = String(counter.min).padStart(2, '0');
       document.getElementById('sec').textContent = String(counter.sec).padStart(2, '0');
-    };
-    //残り時間が0になった時に終了表示をする
-    if ((Math.floor(counter.rest / 1000)) < 0) {
+    }else{
+      //残り時間がなくなった時に終了表示をする
       document.getElementById('finished').textContent = '終了しました';
-    };
+    }
     refresh();
 
   };
@@ -62,4 +61,4 @@ if (biditem["finished"] === true) {
 
   recalc();
 
-};
+}
