@@ -32,7 +32,7 @@ if (biditem["finished"] === true) {
     const min = Math.floor(rest / 1000 / 60) % 60;
     const hours = Math.floor(rest / 1000 / 60 / 60) % 24;
     const days = Math.floor(rest / 1000 / 60 / 60 / 24);
-    const count = { days:days, hours:hours, min:min, sec:sec };
+    const count = { days: days, hours: hours, min: min, sec: sec, rest: rest };
     //1回のループごとに１を足す
     serverCurrentTimestamp = serverCurrentTimestamp + 1;
     return count;
@@ -41,16 +41,19 @@ if (biditem["finished"] === true) {
   const recalc = () => {
     //ここにはJSのオブジェクトが入る
     const counter = countdown(goal);
-    //カウントが0になった時に終了表示をする
-    if ((counter.days === 0) && (counter.hours === 0) && (counter.min === 0) && (counter.sec === 0)) {
-      document.getElementById('finished').textContent = '終了しました';
-    } else {
+    //残り時間がある時は残り時間を表示する
+    if ((Math.floor(counter.rest / 1000)) > 0) {
       document.getElementById('day').textContent = counter.days;
       document.getElementById('hour').textContent = counter.hours;
       document.getElementById('min').textContent = String(counter.min).padStart(2, '0');
       document.getElementById('sec').textContent = String(counter.sec).padStart(2, '0');
     };
+    //残り時間が0になった時に終了表示をする
+    if ((Math.floor(counter.rest / 1000)) < 0) {
+      document.getElementById('finished').textContent = '終了しました';
+    };
     refresh();
+
   };
 
   const refresh = () => {
