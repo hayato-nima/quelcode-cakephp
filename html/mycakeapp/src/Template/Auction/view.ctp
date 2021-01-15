@@ -85,12 +85,12 @@
 </div>
 
 <?php
-$timestamp = time();
+$serverCurrentTimestamp = time();
 echo <<<EOM
 <script type="text/javascript">
 //データベースの終了時間をJavaScriptde扱う
-const obj = {$biditem};
-let timestamp = {$timestamp};
+const biditem = {$biditem};
+let serverCurrentTimestamp = {$serverCurrentTimestamp};
 </script>
 EOM;
 echo $this->Html->script('script', array('inline' => true));
